@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--包扫描,将使用注释的类注入IOC-->
+    <context:component-scan base-package="com"></context:component-scan>
+    <!--将自动注入两个bean,支持JSR303注释，可以用于校验数据和数据格式化-->
+    <!--validator="validator"是将自添加的校验器注入-->
+    <!--开启SpingMVC注解模式-->
+    <mvc:annotation-driven validator="validator"/>
+
+
+    <mvc:default-servlet-handler/>
+    <!-- 以下 validator  ConversionService（验证转换服务器） 在使用 mvc:annotation-driven 会 自动注册-->
+    <!--用于通过国家化资源变量的名获取变量的值-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <!--将HibernateValidator这个校验器的bean注入到该ValidatorFactory中-->
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
+        <!--将国际化资源文件注入该bean中-->
+        <!--<property name="validationMessageSource" ref="messageSource"/>-->
+    </bean>
+    <!-- 配置视图解析器，定义跳转的文件的前后缀-->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/"></property>
+        <!--后缀-->
+        <property name="suffix" value=".html"></property>
+    </bean>
+    <!-- 多部分文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600"/>
+        <property name="maxInMemorySize" value="4096"/>
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+</beans>

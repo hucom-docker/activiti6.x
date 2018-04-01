@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+
+
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--对dataSource 数据源进行事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--该引用的bean定义在其他配置文件中，编辑器无法找到，在将所有的配置导入到一个文件中后，将生成一个配置，不会影响工程的运行-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 事务管理 通知 -->
+    <!--配置基于注解的事物支持-->
+     <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

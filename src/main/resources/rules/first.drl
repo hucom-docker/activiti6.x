@@ -1,0 +1,31 @@
+package  com.dto
+
+
+function void print(Member m){
+   System.out.println("函数测试"+m.getIdentity()+","+m.getConsumption());
+}
+
+
+rule "discount 7"
+    when
+       $m:Member(identity == "gold");
+    then
+        $m.setAmount(0.3);
+        update($m);
+end
+
+rule "discount 8"
+    when
+        $m:Member(identity == "silver");
+    then
+         $m.setAmount(0.2);
+         update($m);
+end
+
+rule "discount 9"
+    when
+        $m:Member(identity == "copper");
+    then
+         $m.setAmount(0.1);
+         update($m);
+end

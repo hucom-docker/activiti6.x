@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--流程引擎的配置bean-->
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <!--事物管理-->
+        <property name="transactionManager" ref="transactionManager"/>
+        <!--数据库策略  默认为false-->
+        <property name="databaseSchemaUpdate" value="true"/>
+        <!--配置不默认生成流程图-->
+        <!--<property name="createDiagramOnDeploy" value="false"/>-->
+        <!--激活异步执行引擎-->
+        <property name="asyncExecutorActivate" value="true"></property>
+        <!--添加drools规则引擎-->
+        <property name="customPostDeployers">
+            <list>
+                <bean class="org.activiti.engine.impl.rules.RulesDeployer"/>
+            </list>
+        </property>
+        <!--注入spring的bean,在xml中使用activiti:expression="${myService.print(execution,name)}，execution为内置参数，为执行流-->
+        <property name="beans">
+            <map>
+                <entry key="myService" value-ref="myService"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!--流程引擎bean-->
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+    <bean id="myService" class="com.service.MyService"></bean>
+
+</beans>

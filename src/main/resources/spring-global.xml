@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--spring的总文件-->
+    <!--扫描包，读取注释信息等-->
+    <!--其实component-scan 就有了annotation-config的功能即把需要的类注册到了spring容器中 -->
+    <context:component-scan base-package="com"></context:component-scan>
+    <import resource="spring/db.xml"></import>
+    <import resource="spring/spring-service.xml"></import>
+    <import resource="spring/spring-mybatis.xml"></import>
+    <import resource="activiti.cfg.xml"></import>
+</beans>
